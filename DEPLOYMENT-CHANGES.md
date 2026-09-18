@@ -39,3 +39,17 @@ Source mới chuẩn hóa về npm:
 - Các route `/`, `/about`, `/services`, `/projects`, `/contact`.
 - Dữ liệu công ty, dịch vụ và dự án.
 - Khả năng build Cloudflare Worker bằng Vinext/Vite.
+
+## Sửa lỗi menu điều hướng trên Cloudflare
+
+Vinext `1.0.0-beta.5` phát sinh lỗi JavaScript trong thành phần `next/link` sau khi triển khai Worker (`RSC prefetch setup error` và `TypeError` trong chunk `link`). Kết quả là URL trực tiếp vẫn mở được nhưng bấm menu trên trang không điều hướng.
+
+Source production đã thay các `Link` nội bộ bằng thẻ HTML `<a href>` trong:
+
+- `components/site-header.tsx`
+- `components/site-footer.tsx`
+- `app/page.tsx`
+- `app/about/page.tsx`
+- `app/services/page.tsx`
+
+Đây là phương án tương thích với cả Cloudflare Worker và Next.js chạy trong Docker. Nội dung, giao diện và các URL không thay đổi; liên kết sẽ tải trang đầy đủ thay vì dùng bộ định tuyến phía trình duyệt của Vinext.

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ArrowRight, PackageCheck, Warehouse } from "lucide-react";
-import Link from "next/link";
 
 import { PageHero } from "@/components/page-hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -57,7 +56,7 @@ export default function ServicesPage() {
               intro="The company profile describes coordinated transport, port, warehousing and forwarding activities."
               light
             />
-            <Link href="/projects" className="text-link text-link--light">See cargo experience <ArrowRight size={17} /></Link>
+            <a href="/projects" className="text-link text-link--light">See cargo experience <ArrowRight size={17} /></a>
           </div>
           <ol className="chain-steps">
             <li><span><PackageCheck size={22} /></span><div><strong>Cargo handling</strong><p>Secure loading for bulk, bagged, industrial and project cargo.</p></div></li>

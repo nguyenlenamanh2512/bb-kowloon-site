@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
 
 import { PageHero } from "@/components/page-hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -70,7 +69,7 @@ export default function AboutPage() {
               </article>
             ))}
           </div>
-          <Link href="/services" className="text-link mt-10">Explore our services <ArrowRight size={17} /></Link>
+          <a href="/services" className="text-link mt-10">Explore our services <ArrowRight size={17} /></a>
         </div>
       </section>
 

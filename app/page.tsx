@@ -1,5 +1,4 @@
 import { Anchor, ArrowRight, Boxes, Route, Ship } from "lucide-react";
-import Link from "next/link";
 
 import { ProjectCard } from "@/components/project-card";
 import { SectionHeading } from "@/components/section-heading";
@@ -21,10 +20,10 @@ export default function Home() {
             Reliable cross-border transport for bulk, oversized, project and agricultural cargo along the Mekong River.
           </p>
           <div className="hero-actions">
-            <Link href="/services" className="button-primary">
+            <a href="/services" className="button-primary">
               Explore our services <ArrowRight size={18} />
-            </Link>
-            <Link href="/projects" className="button-ghost">View cargo experience</Link>
+            </a>
+            <a href="/projects" className="button-ghost">View cargo experience</a>
           </div>
         </div>
         <div className="home-hero__visual">
@@ -53,7 +52,7 @@ export default function Home() {
               intro="A focused logistics operator connecting Vietnam and Cambodia through inland waterways and coordinated cargo handling."
             />
             <p>{company.overview}</p>
-            <Link href="/about" className="text-link">Discover our company <ArrowRight size={17} /></Link>
+            <a href="/about" className="text-link">Discover our company <ArrowRight size={17} /></a>
           </div>
           <figure className="image-frame image-frame--cut">
             <img src="/images/profile/about-port-cranes.webp" alt="Port cranes and a vessel at a river terminal" loading="lazy" />
@@ -66,7 +65,7 @@ export default function Home() {
         <div className="site-shell">
           <div className="section-heading-row">
             <SectionHeading eyebrow="What we do" title="One route. Six connected services." light />
-            <Link href="/services" className="text-link text-link--light">All services <ArrowRight size={17} /></Link>
+            <a href="/services" className="text-link text-link--light">All services <ArrowRight size={17} /></a>
           </div>
           <div className="service-grid reveal">
             {services.map((service) => {
@@ -111,7 +110,7 @@ export default function Home() {
               title="Proof of work, across cargo types"
               intro="Operations documented in the company profile, from agricultural products to industrial and oversized cargo."
             />
-            <Link href="/projects" className="text-link">View all work <ArrowRight size={17} /></Link>
+            <a href="/projects" className="text-link">View all work <ArrowRight size={17} /></a>
           </div>
           <div className="featured-projects reveal">
             {projects.slice(0, 4).map((project, index) => (
@@ -162,7 +161,7 @@ export default function Home() {
             <p className="eyebrow">Plan your next movement</p>
             <h2>Building long-term value together.</h2>
           </div>
-          <Link href="/contact" className="button-primary">Start a conversation <ArrowRight size={18} /></Link>
+          <a href="/contact" className="button-primary">Start a conversation <ArrowRight size={18} /></a>
         </div>
       </section>
 
