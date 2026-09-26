@@ -8,7 +8,7 @@ import { company, operatingPrinciples } from "@/data/company";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About BB Kowloon and its Mekong River logistics operations between Vietnam and Cambodia.",
+  description: "About BB Kowloon, your trusted local ship agency and logistics partner in Cambodia.",
 };
 
 export default function AboutPage() {
@@ -16,15 +16,15 @@ export default function AboutPage() {
     <main>
       <PageHero
         eyebrow="About BB Kowloon"
-        title="A logistics operator shaped by the river"
-        intro="Focused on safe, timely and cost-efficient cargo movement between Vietnam and Cambodia."
+        title="Your Trusted Local Partner in Cambodia"
+        intro="Focused on safe, timely and cost-efficient cargo in Cambodia."
         image="/images/profile/about-port-cranes.webp"
         imageAlt="Port cranes handling cargo beside a vessel"
       />
 
       <section className="section section--paper">
         <div className="site-shell about-story reveal">
-          <SectionHeading eyebrow="Company overview" title="Cross-border experience, end to end" />
+          <SectionHeading eyebrow="Company overview" title="Ship agency first" />
           <div className="about-story__body">
             <p>{company.overview}</p>
             <p>{company.approach}</p>

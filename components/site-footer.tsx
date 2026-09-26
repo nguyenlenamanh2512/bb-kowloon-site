@@ -17,7 +17,7 @@ export function SiteFooter() {
             </div>
           </div>
           <p className="mt-7 max-w-md text-white/65">
-            Cross-border cargo transport between Vietnam and Cambodia via the Mekong River.
+            Your Trusted Logistics Partner in Cambodia.
           </p>
         </div>
         <div>
@@ -34,6 +34,7 @@ export function SiteFooter() {
           <div className="footer-contact">
             <a href={`tel:${company.phone.replaceAll(" ", "")}`}><Phone size={17} />{company.phone}</a>
             <a href={`mailto:${company.email}`}><Mail size={17} />{company.email}</a>
+            <a href={`mailto:${company.operationsEmail}`}><Mail size={17} />{company.operationsEmail}</a>
             <p><MapPin size={17} />{company.address}</p>
           </div>
         </div>

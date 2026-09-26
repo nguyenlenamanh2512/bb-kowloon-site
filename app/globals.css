@@ -1594,3 +1594,562 @@ a {
     margin-bottom: 0.65rem;
   }
 }
+
+/* Ship agency and port-call experience */
+.home-hero::before {
+  background: linear-gradient(90deg, rgb(2 31 47 / 0.98) 0 39%, rgb(2 31 47 / 0.84) 57%, rgb(2 31 47 / 0.28) 82%);
+}
+
+.home-hero h1 {
+  max-width: 12ch;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(4rem, 7.6vw, 7.6rem);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  text-transform: none;
+}
+
+.home-hero__visual {
+  inset-inline-start: 34%;
+}
+
+.home-hero__visual img {
+  object-position: center;
+}
+
+.home-hero__copy .eyebrow,
+.page-hero .eyebrow,
+.port-finder-section .eyebrow,
+.pda-form .eyebrow {
+  color: #e6b866;
+}
+
+.home-hero .button-primary,
+.pda-form .button-primary,
+.port-contact .button-primary {
+  background: #e0ad58;
+  color: #082d3b;
+}
+
+.port-finder-section {
+  scroll-margin-top: 2rem;
+  background: #eef2f0;
+}
+
+.port-finder-section .section-heading h2,
+.supporting-services-heading .section-heading h2,
+.pda-form__heading h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  text-transform: none;
+}
+
+.port-planner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(20rem, 0.55fr);
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+
+.port-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.port-choice {
+  display: grid;
+  min-height: 13.5rem;
+  cursor: pointer;
+  align-content: space-between;
+  gap: 1.3rem;
+  border: 1px solid #cfd9da;
+  border-top: 3px solid #b58a4c;
+  background: rgb(255 255 255 / 0.78);
+  padding: 1.7rem;
+  color: #0a2e3c;
+  text-align: left;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.port-choice:hover,
+.port-choice--active {
+  border-color: #0a6470;
+  background: white;
+  box-shadow: 0 1.2rem 3rem rgb(18 55 61 / 0.1);
+  transform: translateY(-0.2rem);
+}
+
+.port-choice > span {
+  color: #95703d;
+  font-size: 0.75rem;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.port-choice > strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.06;
+}
+
+.port-choice > small {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #08606c;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.port-contact {
+  display: grid;
+  min-height: 100%;
+  align-content: start;
+  gap: 1.4rem;
+  background: #0a3443;
+  padding: 2rem;
+  color: white;
+}
+
+.port-contact__marker {
+  display: grid;
+  width: 3.4rem;
+  height: 3.4rem;
+  place-items: center;
+  border-radius: 50%;
+  background: #e0ad58;
+  color: #0a3443;
+}
+
+.port-contact .eyebrow {
+  color: #e6b866;
+}
+
+.port-contact h3 {
+  margin-top: 0.65rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.15rem;
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.port-contact__role {
+  margin-top: 0.65rem;
+  color: rgb(255 255 255 / 0.66);
+}
+
+.port-contact__links {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.4rem;
+}
+
+.port-contact__links a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgb(255 255 255 / 0.84);
+}
+
+.port-contact > .button-primary {
+  align-self: end;
+  border-radius: 0;
+}
+
+.river-network-layout {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  align-items: center;
+  gap: 2.5rem 4rem;
+}
+
+.river-network-layout > div:first-child p:last-child {
+  max-width: 36rem;
+  margin-top: 1.7rem;
+  color: var(--muted-ink);
+}
+
+.river-network-map {
+  min-height: 30rem;
+  overflow: hidden;
+  border-radius: 2rem;
+  background: linear-gradient(145deg, #062b3a, #0e5260);
+  padding: 1.5rem;
+}
+
+.river-network-map img {
+  width: 100%;
+  min-height: 27rem;
+  object-fit: contain;
+}
+
+.river-terminal-grid {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.river-terminal-grid article {
+  border: 1px solid #d6dfe2;
+  border-top: 3px solid #e0ad58;
+  background: white;
+  padding: 1.3rem;
+}
+
+.river-terminal-grid article > span {
+  color: #0a6470;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.river-terminal-grid h3 {
+  min-height: 4.5rem;
+  margin-top: 0.75rem;
+  color: #0a2e3c;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.river-terminal-grid dl {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+}
+
+.river-terminal-grid dl > div {
+  border-top: 1px solid #e4e9ea;
+  padding-top: 0.6rem;
+}
+
+.river-terminal-grid dt {
+  color: #7b878d;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.river-terminal-grid dd {
+  margin: 0.18rem 0 0;
+  color: #38515a;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.core-service-card {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.8fr) minmax(24rem, 1.2fr) auto;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 3rem;
+  border-left: 4px solid #e0ad58;
+  background: #0a3443;
+  padding: clamp(2rem, 5vw, 4rem);
+  color: white;
+}
+
+.core-service-card .eyebrow {
+  color: #e6b866;
+}
+
+.core-service-card h2 {
+  margin-top: 0.75rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 5vw, 4.4rem);
+  font-weight: 500;
+}
+
+.core-service-card > p {
+  color: rgb(255 255 255 / 0.72);
+  font-size: 1.08rem;
+}
+
+.supporting-services-heading {
+  margin-top: clamp(5rem, 9vw, 8rem);
+}
+
+.pda-section,
+.head-office-section {
+  background: #082f3e;
+  color: white;
+}
+
+.pda-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(36rem, 1.3fr);
+  align-items: start;
+  gap: clamp(3rem, 7vw, 7rem);
+}
+
+.pda-intro {
+  position: sticky;
+  top: 2rem;
+}
+
+.pda-intro .eyebrow {
+  color: #e6b866;
+}
+
+.pda-intro h2 {
+  margin-top: 1rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+.pda-intro > p:not(.eyebrow) {
+  margin-top: 1.7rem;
+  color: rgb(255 255 255 / 0.7);
+  font-size: 1.08rem;
+}
+
+.pda-intro__note {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgb(255 255 255 / 0.18);
+  padding-top: 1.5rem;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.pda-intro__note svg {
+  flex: 0 0 auto;
+  color: #e6b866;
+}
+
+.pda-form {
+  display: grid;
+  scroll-margin-top: 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  background: #f8faf8;
+  padding: clamp(1.5rem, 4vw, 3.2rem);
+  color: #123743;
+}
+
+.pda-form__heading,
+.pda-form__wide {
+  grid-column: 1 / -1;
+}
+
+.pda-form__heading {
+  margin-bottom: 0.6rem;
+}
+
+.pda-form__heading h2 {
+  margin-top: 0.35rem;
+  color: #082f3e;
+  font-size: clamp(2.4rem, 5vw, 4.3rem);
+}
+
+.pda-form__heading > p:last-child {
+  margin-top: 0.4rem;
+  color: #6a797e;
+}
+
+.pda-form > div:not(.pda-form__heading):not(.pda-form__submit) {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.pda-form label {
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.pda-form input,
+.pda-form select,
+.pda-form textarea {
+  width: 100%;
+  border: 1px solid #bfcdd0;
+  border-radius: 0;
+  background: white;
+  padding: 0.9rem 1rem;
+  color: #123743;
+  font: inherit;
+}
+
+.pda-form input,
+.pda-form select {
+  min-height: 3.4rem;
+}
+
+.pda-form__submit {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 0.4rem;
+}
+
+.pda-form__submit .button-primary {
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.pda-form__submit p {
+  max-width: 28rem;
+  color: #6a797e;
+  font-size: 0.8rem;
+}
+
+.representative-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.representative-grid article {
+  display: grid;
+  min-height: 22rem;
+  align-content: start;
+  border: 1px solid #d4dddf;
+  border-top: 3px solid #e0ad58;
+  background: white;
+  padding: 2rem;
+}
+
+.representative-grid .eyebrow {
+  min-height: 3rem;
+  color: #8b693b;
+  letter-spacing: 0.1em;
+}
+
+.representative-grid h3 {
+  margin-top: 2rem;
+  color: #0a2e3c;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.representative-grid article > p:not(.eyebrow) {
+  color: #68777c;
+}
+
+.representative-grid article > div {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.representative-grid a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #0a6470;
+  font-weight: 700;
+}
+
+.head-office-section .contact-list--panel {
+  margin-top: 0;
+  border-left: 3px solid #e0ad58;
+  background: rgb(255 255 255 / 0.06);
+  padding: 2rem;
+}
+
+.head-office-section .contact-list p,
+.head-office-section .contact-list a {
+  color: rgb(255 255 255 / 0.78);
+}
+
+.head-office-section .contact-list svg {
+  color: #e6b866;
+}
+
+@media (max-width: 1100px) {
+  .port-planner,
+  .river-network-layout,
+  .pda-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .port-contact {
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+  }
+
+  .river-terminal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .core-service-card {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .core-service-card .button-primary {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+
+  .pda-intro {
+    position: static;
+  }
+}
+
+@media (max-width: 800px) {
+  .home-hero__visual {
+    inset: 42% 0 0;
+  }
+
+  .home-hero h1 {
+    max-width: 11ch;
+    font-size: clamp(3.5rem, 13vw, 6rem);
+  }
+
+  .port-choice-grid,
+  .representative-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .port-contact {
+    grid-template-columns: 1fr;
+  }
+
+  .core-service-card,
+  .pda-form {
+    grid-template-columns: 1fr;
+  }
+
+  .pda-form__heading,
+  .pda-form__wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .home-hero h1 {
+    max-width: 100%;
+    font-size: clamp(3.15rem, 13.5vw, 4.4rem);
+  }
+
+  .river-terminal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .river-network-map {
+    min-height: 18rem;
+    padding: 0.5rem;
+  }
+
+  .river-network-map img {
+    min-height: 17rem;
+  }
+
+  .pda-form__submit {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

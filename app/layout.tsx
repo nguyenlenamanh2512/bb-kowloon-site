@@ -9,11 +9,11 @@ export const metadata: Metadata = {
     template: "%s | BB Kowloon",
   },
   description:
-    "Cross-border barge, breakbulk vessel and cargo logistics between Vietnam and Cambodia via the Mekong River.",
+    "Local ship agency, PDA preparation and supporting cargo logistics across Cambodia's seaports and Mekong River terminals.",
   openGraph: {
     title: "BB Kowloon | Barge & Breakbulk Logistics",
     description:
-      "Cross-border cargo transport between Vietnam and Cambodia via the Mekong River.",
+      "Your trusted local ship agency and logistics partner in Cambodia.",
     type: "website",
   },
   icons: {

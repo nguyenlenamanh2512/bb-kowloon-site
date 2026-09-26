@@ -1,8 +1,6 @@
 import {
   Anchor,
-  BadgeCheck,
   Construction,
-  FileCheck2,
   Ship,
   Truck,
   type LucideIcon,
@@ -18,44 +16,43 @@ export type Service = {
 export const services: Service[] = [
   {
     number: "01",
-    title: "Barge Transportation",
+    title: "Barge Transportation in the Mekong River",
     description:
-      "River transport for bulk and project cargo along the Mekong River, with an emphasis on safety and on-time delivery.",
+      "For bulk and project cargo movements along the Cambodia-Vietnam river corridor.",
     icon: Ship,
   },
   {
     number: "02",
     title: "Port & Terminal Operations",
     description:
-      "Port and terminal operations supporting cargo transfer across the company’s transport route.",
+      "Terminal coordination, cargo-handling support, tally and on-site supervision.",
     icon: Anchor,
   },
   {
     number: "03",
-    title: "Customs Brokerage",
+    title: "Ship Chartering",
     description:
-      "Customs brokerage is included within BB Kowloon’s cross-border logistics service offering.",
-    icon: FileCheck2,
+      "Chartering support for bulk cargo and project movements when required.",
+    icon: Ship,
   },
   {
     number: "04",
     title: "Cross-Border Trucking",
     description:
-      "Road transport coordination for cross-border cargo movements between logistics points.",
+      "Border trucking and delivery coordination between Cambodia and Vietnam.",
     icon: Truck,
   },
   {
     number: "05",
-    title: "Ship Agency & Chartering",
-    description:
-      "Ship agency and chartering services for vessel-based cargo operations.",
-    icon: BadgeCheck,
-  },
-  {
-    number: "06",
     title: "Equipment & Vehicle Rental",
     description:
-      "Construction equipment and vehicle rental form part of the company’s listed services.",
+      "Equipment and vehicle availability for port, cargo and project requirements.",
     icon: Construction,
   },
 ];
+
+export const coreService = {
+  title: "Ship Agency",
+  description:
+    "Port call coordination, PDA preparation, husbandry services, documentation, berth and cargo coordination, and local support for vessels calling Cambodia.",
+};

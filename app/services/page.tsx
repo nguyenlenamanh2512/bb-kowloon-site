@@ -4,11 +4,11 @@ import { ArrowRight, PackageCheck, Warehouse } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { SectionHeading } from "@/components/section-heading";
 import { SiteFooter } from "@/components/site-footer";
-import { services } from "@/data/services";
+import { coreService, services } from "@/data/services";
 
 export const metadata: Metadata = {
   title: "Services",
-  description: "Barge transportation, port operations and cross-border logistics services from BB Kowloon.",
+  description: "Local ship agency and supporting logistics services from BB Kowloon in Cambodia.",
 };
 
 export default function ServicesPage() {
@@ -16,19 +16,31 @@ export default function ServicesPage() {
     <main>
       <PageHero
         eyebrow="Services"
-        title="Connected logistics across water, port and road"
-        intro="Six service areas support cargo movement along BB Kowloon’s Vietnam–Cambodia corridor."
-        image="/images/profile/hero-barge.webp"
-        imageAlt="BB Kowloon barge at a cargo vessel"
+        title="Ship agency, first"
+        intro="BB Kowloon is first and foremost a local Cambodia ship agency. Our logistics capabilities support the same port call, cargo movement or customer requirement."
+        image="/images/ports/ship-agency-hero.webp"
+        imageAlt="Container terminal on the Mekong River in Cambodia"
       />
 
       <section className="section section--paper">
         <div className="site-shell">
-          <SectionHeading
-            eyebrow="What we do"
-            title="A practical service network"
-            intro="Each service below is identified in the BB Kowloon company profile."
-          />
+          <SectionHeading eyebrow="Our core service" title="Local support for every call" />
+          <article className="core-service-card reveal">
+            <div>
+              <p className="eyebrow">Core service</p>
+              <h2>{coreService.title}</h2>
+            </div>
+            <p>{coreService.description}</p>
+            <a href="/contact#pda-form" className="button-primary">Request a PDA <ArrowRight size={17} /></a>
+          </article>
+
+          <div className="supporting-services-heading">
+            <SectionHeading
+              eyebrow="Supporting logistics services"
+              title="One local team around the port call"
+              intro="Available as complementary support to an agency appointment — these are not our primary standalone offering."
+            />
+          </div>
           <div className="service-detail-grid reveal">
             {services.map((service) => {
               const Icon = service.icon;
