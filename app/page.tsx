@@ -5,7 +5,8 @@ import { PortPlanner } from "@/components/port-planner";
 import { SectionHeading } from "@/components/section-heading";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { company, operatingPrinciples, ports, riverTerminals } from "@/data/company";
+import { company, operatingPrinciples, ports } from "@/data/company";
+import { ppapContext, ppapTerminals } from "@/data/ppap";
 import { projects } from "@/data/projects";
 import { services } from "@/data/services";
 
@@ -95,32 +96,48 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section corridor-section">
+      <section id="ppap-network" className="section corridor-section">
         <div className="site-shell river-network-layout reveal">
           <div>
-            <p className="eyebrow">Cambodia river network</p>
-            <h2>Port coverage along the Mekong.</h2>
-            <p>Selected Phnom Penh Autonomous Port terminals from the 2026 PPAP marketing presentation. Timings and distances are indicative planning references.</p>
+            <p className="eyebrow">PPAP network · 2026</p>
+            <h2>Seven river terminals at a glance.</h2>
+            <p>Phnom Penh Autonomous Port (PPAP) maps seven operational terminal sites across the Mekong and Tonle Sap network. Explore each terminal below. These facilities and figures belong to PPAP; BB Kowloon supports customers with local ship agency and logistics coordination.</p>
           </div>
           <figure className="river-network-map">
-            <img src="/images/ports/ppap-waterway-network.webp" alt="Waterway map connecting PPAP river terminals with ports in Cambodia and Vietnam" loading="lazy" />
+            <img src="/images/ports/ppap-waterway-network.webp" alt="PPAP map showing the seven LM17, UM2, UM1, TS11, TS3, TS1 and LM26 terminals and waterway connections" loading="lazy" />
           </figure>
           <div className="river-terminal-grid">
-            {riverTerminals.map((terminal) => (
+            {ppapTerminals.map((terminal) => (
               <article key={terminal.code}>
-                <span>{terminal.code}</span>
+                <span>{terminal.code} / {terminal.kind}</span>
                 <h3>{terminal.name}</h3>
                 <dl>
-                  <div><dt>Berths</dt><dd>{terminal.berths}</dd></div>
-                  <div><dt>River draft</dt><dd>{terminal.draft}</dd></div>
-                  <div><dt>Capacity</dt><dd>{terminal.capacity}</dd></div>
-                  <div><dt>Land</dt><dd>{terminal.land}</dd></div>
-                  <div><dt>Navigation</dt><dd>{terminal.navigation}</dd></div>
-                  <div><dt>Distance</dt><dd>{terminal.distance}</dd></div>
+                  {terminal.specs.map((spec) => (
+                    <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>
+                  ))}
                 </dl>
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section ppap-context-section">
+        <div className="site-shell">
+          <SectionHeading
+            eyebrow="PPAP operations"
+            title="More context for your Cambodia port call"
+            intro="Cargo activity, port services, inland waterways and planned development across the PPAP network."
+          />
+          <div className="ppap-context-grid reveal">
+            {ppapContext.map((item) => (
+              <article key={item.title}>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+          <p className="ppap-context-note">The 2026 figures are partial-year results. Development items are PPAP plans and should not be treated as completed facilities.</p>
         </div>
       </section>
 
@@ -135,8 +152,8 @@ export default function Home() {
             <a href="/projects" className="text-link">View all work <ArrowRight size={17} /></a>
           </div>
           <div className="featured-projects reveal">
-            {projects.slice(0, 4).map((project, index) => (
-              <ProjectCard key={project.slug} project={project} featured={index === 0} />
+            {projects.slice(0, 4).map((project) => (
+              <ProjectCard key={project.slug} project={project} />
             ))}
           </div>
         </div>

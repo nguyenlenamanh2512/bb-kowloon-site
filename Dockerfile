@@ -8,7 +8,7 @@ RUN npm ci
 FROM node:22-alpine AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG SITE_URL=https://www.bb-kowloon.com
+ARG SITE_URL=https://www.bbKowloon.com
 ENV SITE_URL=$SITE_URL
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
@@ -20,7 +20,7 @@ ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     HOSTNAME=0.0.0.0 \
     PORT=3000 \
-    SITE_URL=https://www.bb-kowloon.com
+    SITE_URL=https://www.bbKowloon.com
 
 RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 nextjs

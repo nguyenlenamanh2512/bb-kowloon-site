@@ -1,5 +1,11 @@
 # BB Kowloon corporate website
 
+## Version 2: PPAP terminal reference
+
+The home page presents all seven Phnom Penh Autonomous Port (PPAP) terminal sites from the July 2026 PPAP presentation, with technical details and routes available in a dropdown on each terminal card. The About page includes PPAP's network history with illustrations for each milestone. The Contact page serves the complete PPAP PDF and a QR code for the same download. `PPAP-SOURCE-NOTES.md` maps each website section to its source pages for internal review.
+
+The QR code points to `https://www.bbKowloon.com/documents/ppap-2026-presentation.pdf`, matching the domain supplied in the BB Kowloon Word document. Deploy at that domain for scanning to work. If the final public domain changes, regenerate `public/documents/ppap-2026-download-qr.svg` with the new absolute PDF URL and update `SITE_URL`.
+
 Website doanh nghiệp BB Kowloon, xây dựng bằng Next.js 16, React 19, TypeScript và Tailwind CSS 4. Repository hỗ trợ ba kiểu triển khai độc lập:
 
 - Docker/Node.js trên Ubuntu VPS (Hostinger hoặc nhà cung cấp VPS khác).

@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = "https://www.bb-kowloon.com";
+const DEFAULT_SITE_URL = "https://www.bbKowloon.com";
 
 export function getSiteUrl(): string {
   const configuredUrl = process.env.SITE_URL?.trim();

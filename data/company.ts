@@ -26,6 +26,9 @@ export type PortRepresentative = {
   languages: string;
   phones: string[];
   email: string;
+  qrImage: string;
+  contactCard: string;
+  qrAlt: string;
 };
 
 export const portRepresentatives: PortRepresentative[] = [
@@ -36,6 +39,9 @@ export const portRepresentatives: PortRepresentative[] = [
     languages: "Chinese / English speaking representative",
     phones: ["+84 979 648 679", "+855 186 776 656", "+855 81 260 983"],
     email: "ops@bbkowloon.com",
+    qrImage: "/images/contact/thao-quyen-qr.png",
+    contactCard: "/images/contact/thao-quyen-card.png",
+    qrAlt: "Telegram and WeChat QR codes for Ms. Thao Quyen",
   },
   {
     id: "pongnarith-chorn",
@@ -44,6 +50,9 @@ export const portRepresentatives: PortRepresentative[] = [
     languages: "Khmer-speaking representative",
     phones: ["+855 77 716 127", "+855 93 558 070"],
     email: "ops@bbkowloon.com",
+    qrImage: "/images/contact/pongnarith-chorn-qr.png",
+    contactCard: "/images/contact/pongnarith-chorn-card.png",
+    qrAlt: "WeChat, Telegram and Zalo QR codes for Mr. Pongnarith Chorn",
   },
   {
     id: "minh-son",
@@ -52,6 +61,9 @@ export const portRepresentatives: PortRepresentative[] = [
     languages: "Vietnamese-speaking representative",
     phones: ["+84 968 716 188"],
     email: "agency@bbkowloon.com",
+    qrImage: "/images/contact/minh-son-qr.png",
+    contactCard: "/images/contact/minh-son-card.png",
+    qrAlt: "Zalo, Telegram and WeChat QR codes for Mr. Minh Son",
   },
 ];
 
@@ -69,70 +81,6 @@ export const portOptions: PortOption[] = [
   { id: "kampot", number: "03", category: "Seaport", name: "Kampot", representativeId: "pongnarith-chorn" },
   { id: "oknha-mong", number: "04", category: "Seaport", name: "Oknha Mong", representativeId: "pongnarith-chorn" },
   { id: "mekong-river", number: "05", category: "River network", name: "Mekong River / Other", representativeId: "minh-son" },
-];
-
-export type RiverTerminal = {
-  code: string;
-  name: string;
-  berths: string;
-  draft: string;
-  capacity: string;
-  land: string;
-  navigation: string;
-  distance: string;
-};
-
-export const riverTerminals: RiverTerminal[] = [
-  {
-    code: "LM17",
-    name: "Container Terminal LM17",
-    berths: "9 berths",
-    draft: "4.5 m",
-    capacity: "1,000,000 TEUs/year",
-    land: "40 ha (33.22 ha operational)",
-    navigation: "Cai Mep 28-32 hrs · Cat Lai 21-25 hrs",
-    distance: "Cai Mep 373 km · Cat Lai 345 km",
-  },
-  {
-    code: "UM2",
-    name: "Sub-feeder Multipurpose Terminal UM2",
-    berths: "2 berths",
-    draft: "4.5 m",
-    capacity: "70,000 TEUs/year",
-    land: "24.04 ha (5.49 ha operational)",
-    navigation: "Cai Mep 31-42 hrs · Cat Lai 30-40 hrs",
-    distance: "Cai Mep 503 km · Cat Lai 475 km",
-  },
-  {
-    code: "UM1",
-    name: "Sub-feeder Multipurpose Terminal UM1",
-    berths: "1 berth",
-    draft: "4.5 m",
-    capacity: "60,000 TEUs/year",
-    land: "4 ha",
-    navigation: "Cai Mep 32-43 hrs · Cat Lai 27-38 hrs",
-    distance: "Cai Mep 513 km · Cat Lai 485 km",
-  },
-  {
-    code: "TS11",
-    name: "Sub-feeder Multipurpose Terminal TS11",
-    berths: "1 berth",
-    draft: "4.5 m",
-    capacity: "60,000 TEUs/year",
-    land: "4 ha",
-    navigation: "Cai Mep 32-43 hrs · Cat Lai 27-38 hrs",
-    distance: "Cai Mep 513 km · Cat Lai 485 km",
-  },
-  {
-    code: "LM26",
-    name: "Sub-feeder Multipurpose Terminal LM26",
-    berths: "5 berths",
-    draft: "4.5-5.5 m",
-    capacity: "3,000-4,000 ton barges",
-    land: "21.90 ha (19.86 ha operational)",
-    navigation: "Cai Mep 17-23 hrs · Cat Lai 15-21 hrs",
-    distance: "Cai Mep 275 km · Cat Lai 247 km",
-  },
 ];
 
 export const operatingPrinciples = [
@@ -164,3 +112,4 @@ export const ports = [
     image: "/images/profile/container-terminal-lm17.webp",
   },
 ];
+

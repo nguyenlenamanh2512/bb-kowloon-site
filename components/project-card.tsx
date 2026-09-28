@@ -2,9 +2,9 @@ import { ArrowUpRight } from "lucide-react";
 
 import type { Project } from "@/data/projects";
 
-export function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
+export function ProjectCard({ project }: { project: Project }) {
   return (
-    <article id={project.slug} className={`project-card ${featured ? "project-card--featured" : ""}`}>
+    <article id={project.slug} className="project-card">
       <div className="project-card__image">
         <img src={project.image} alt={`${project.title} cargo operation`} loading="lazy" />
       </div>

@@ -1,4 +1,5 @@
 import { Menu } from "lucide-react";
+import Link from "next/link";
 
 const navigation = [
   { href: "/about", label: "About" },
@@ -11,12 +12,12 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   return (
     <header className={`site-header ${overlay ? "site-header--overlay" : ""}`}>
       <div className="site-shell flex h-24 items-center justify-between gap-8">
-        <a href="/" aria-label="BB Kowloon home" className="brand-lockup">
+        <Link href="/" aria-label="BB Kowloon home" className="brand-lockup">
           <span className="brand-mark">
             <img src="/images/profile/bb-kowloon-logo.png" alt="" />
           </span>
           <span>BB Kowloon Co., Ltd</span>
-        </a>
+        </Link>
 
         <nav aria-label="Primary navigation" className="desktop-nav">
           {navigation.slice(0, 3).map((item) => (

@@ -5,6 +5,7 @@ import { PageHero } from "@/components/page-hero";
 import { SectionHeading } from "@/components/section-heading";
 import { SiteFooter } from "@/components/site-footer";
 import { company, operatingPrinciples } from "@/data/company";
+import { ppapTimeline } from "@/data/ppap";
 
 export const metadata: Metadata = {
   title: "About",
@@ -28,6 +29,31 @@ export default function AboutPage() {
           <div className="about-story__body">
             <p>{company.overview}</p>
             <p>{company.approach}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section ppap-history-section">
+        <div className="site-shell">
+          <SectionHeading
+            eyebrow="The port network behind the route"
+            title="How Phnom Penh Autonomous Port developed"
+            intro="The timeline below describes Phnom Penh Autonomous Port (PPAP), the operator of the seven river terminals featured on this site."
+            light
+          />
+          <ol className="ppap-timeline reveal">
+            {ppapTimeline.map((milestone) => (
+              <li key={milestone.year}>
+                <strong>{milestone.year}</strong>
+                <p>{milestone.event}</p>
+                <img src={milestone.image} alt={milestone.imageAlt} loading="lazy" />
+              </li>
+            ))}
+          </ol>
+          <div className="ppap-history-links">
+            {/* Full-page navigation keeps this link compatible with the Cloudflare build. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a className="text-link text-link--light" href="/#ppap-network">Explore the seven PPAP terminals <ArrowRight size={17} /></a>
           </div>
         </div>
       </section>

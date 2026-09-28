@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Globe2, Mail, MapPin, Phone, Ship } from "lucide-react";
+import { ArrowDownToLine, Globe2, Mail, MapPin, Phone, Ship } from "lucide-react";
 import { Suspense } from "react";
 
 import { PageHero } from "@/components/page-hero";
@@ -7,6 +7,7 @@ import { PdaInquiryForm } from "@/components/pda-inquiry-form";
 import { SectionHeading } from "@/components/section-heading";
 import { SiteFooter } from "@/components/site-footer";
 import { company, portRepresentatives } from "@/data/company";
+import { ppapPresentation } from "@/data/ppap";
 
 export const metadata: Metadata = {
   title: "Port PDA & Contact",
@@ -47,19 +48,47 @@ export default function ContactPage() {
           />
           <div className="representative-grid reveal">
             {portRepresentatives.map((person) => (
-              <article key={person.id}>
+              <article key={person.id} className="representative-card">
                 <p className="eyebrow">{person.languages}</p>
                 <h3>{person.name}</h3>
                 <p>{person.role}</p>
-                <div>
+                <div className="representative-card__links">
                   {person.phones.map((phone) => (
                     <a key={phone} href={`tel:${phone.replaceAll(" ", "")}`}><Phone size={17} />{phone}</a>
                   ))}
                   <a href={`mailto:${person.email}`}><Mail size={17} />{person.email}</a>
                 </div>
+                <a
+                  className="representative-card__qr"
+                  href={person.contactCard}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Open the full digital business card for ${person.name}`}
+                >
+                  <span>Scan to connect</span>
+                  <img src={person.qrImage} alt={person.qrAlt} loading="lazy" />
+                  <small>Open full digital business card</small>
+                </a>
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section section--paper" id="ppap-download">
+        <div className="site-shell ppap-download">
+          <div>
+            <p className="eyebrow">Port reference · PDF</p>
+            <h2>Take the PPAP terminal guide with you.</h2>
+            <p>Download Phnom Penh Autonomous Port&apos;s 2026 presentation for the complete seven-terminal profiles, cargo statistics, activities, connections and development plans. The 48-page PDF is provided by PPAP&apos;s Marketing Team.</p>
+            <a className="button-primary" href={ppapPresentation} download="PPAP-2026-presentation.pdf">
+              Download PDF (13 MB) <ArrowDownToLine size={18} />
+            </a>
+          </div>
+          <a className="ppap-download__qr" href={ppapPresentation} download="PPAP-2026-presentation.pdf" aria-label="Download the PPAP 2026 presentation using the QR code">
+            <img src="/documents/ppap-2026-download-qr.svg" alt="QR code linking to the PPAP 2026 PDF on BBkowloon.com" width="200" height="200" loading="lazy" />
+            <span>Scan to download the presentation</span>
+          </a>
         </div>
       </section>
 

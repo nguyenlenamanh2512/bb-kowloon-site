@@ -3,6 +3,8 @@
 The company profile does not contain enough verified information for the items below. They were not invented or presented as facts on the website.
 
 - Company history, founding date and milestones
+
+  The PPAP timeline on the About page is the port operator's history from its 2026 presentation; it does not establish BB Kowloon's founding date.
 - Dedicated vision, mission and core-values statements
 - Fleet quantities, vessel specifications and equipment inventory
 - Employee count, leadership profiles and organization structure

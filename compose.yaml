@@ -4,13 +4,13 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        SITE_URL: ${SITE_URL:-https://www.bb-kowloon.com}
+        SITE_URL: ${SITE_URL:-https://www.bbKowloon.com}
     image: ${IMAGE_NAME:-bb-kowloon-site:local}
     restart: unless-stopped
     init: true
     ports:
       - "${BIND_ADDRESS:-0.0.0.0}:${APP_PORT:-3000}:3000"
     environment:
-      SITE_URL: ${SITE_URL:-https://www.bb-kowloon.com}
+      SITE_URL: ${SITE_URL:-https://www.bbKowloon.com}
     security_opt:
       - no-new-privileges:true

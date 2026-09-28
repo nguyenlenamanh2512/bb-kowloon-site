@@ -713,7 +713,11 @@ a {
 }
 
 .featured-projects {
-  grid-template-columns: 1.2fr 0.8fr;
+  align-items: start;
+}
+
+.featured-projects .project-card__image {
+  height: clamp(13rem, 17vw, 17rem);
 }
 
 .project-card {
@@ -724,18 +728,10 @@ a {
   box-shadow: 0 1rem 3rem rgb(12 39 67 / 0.06);
 }
 
-.project-card--featured {
-  grid-row: span 2;
-}
-
 .project-card__image {
   height: 19rem;
   overflow: hidden;
   background: var(--navy);
-}
-
-.project-card--featured .project-card__image {
-  height: 32rem;
 }
 
 .project-card__image img {
@@ -1431,14 +1427,6 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .project-card--featured {
-    grid-row: auto;
-  }
-
-  .project-card--featured .project-card__image {
-    height: 22rem;
-  }
-
   .principle-grid,
   .port-grid {
     grid-template-columns: 1fr;
@@ -1791,15 +1779,17 @@ a {
 .river-terminal-grid {
   display: grid;
   grid-column: 1 / -1;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.85rem;
 }
 
 .river-terminal-grid article {
+  display: flex;
+  flex-direction: column;
   border: 1px solid #d6dfe2;
   border-top: 3px solid #e0ad58;
   background: white;
-  padding: 1.3rem;
+  padding: 1.05rem 1.15rem;
 }
 
 .river-terminal-grid article > span {
@@ -1810,8 +1800,8 @@ a {
 }
 
 .river-terminal-grid h3 {
-  min-height: 4.5rem;
-  margin-top: 0.75rem;
+  min-height: 4rem;
+  margin-top: 0.65rem;
   color: #0a2e3c;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.25rem;
@@ -1821,28 +1811,157 @@ a {
 
 .river-terminal-grid dl {
   display: grid;
-  gap: 0.7rem;
-  margin-top: 1.2rem;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 0.65rem;
 }
 
 .river-terminal-grid dl > div {
   border-top: 1px solid #e4e9ea;
-  padding-top: 0.6rem;
+  padding: 0.5rem 0 0.42rem;
 }
 
 .river-terminal-grid dt {
   color: #7b878d;
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .river-terminal-grid dd {
-  margin: 0.18rem 0 0;
+  margin: 0.16rem 0 0;
   color: #38515a;
-  font-size: 0.78rem;
-  line-height: 1.45;
+  font-size: 0.73rem;
+  line-height: 1.35;
+}
+
+.ppap-context-section {
+  border-block: 1px solid #d1e0e3;
+  background: #e7f0f2;
+}
+
+.ppap-context-note {
+  max-width: 66rem;
+  margin-top: 1.2rem;
+  color: #627083;
+  font-size: 0.9rem;
+}
+
+.ppap-context-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.ppap-context-grid article {
+  border-top: 3px solid #dba560;
+  background: #fff;
+  padding: 1.6rem;
+  box-shadow: 0 12px 36px rgb(3 31 66 / 0.06);
+}
+
+.ppap-context-grid h3 {
+  color: #102f40;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  line-height: 1.15;
+}
+
+.ppap-context-grid p {
+  margin-top: 0.8rem;
+  color: #627083;
+  font-size: 0.95rem;
+}
+
+.ppap-history-section {
+  background: #082f3e;
+  color: white;
+}
+
+.ppap-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 3rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.ppap-timeline li {
+  display: flex;
+  flex-direction: column;
+  border-top: 3px solid #e6b866;
+  background: rgb(255 255 255 / 0.07);
+  padding: 1.5rem;
+}
+
+.ppap-timeline strong {
+  color: #e6b866;
+  font-size: 1.9rem;
+}
+
+.ppap-timeline p {
+  margin-top: 0.65rem;
+  color: rgb(255 255 255 / 0.78);
+}
+
+.ppap-timeline img {
+  display: block;
+  width: 100%;
+  height: 14rem;
+  margin-top: auto;
+  padding-top: 1.3rem;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.ppap-history-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+}
+
+.ppap-download {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(14rem, 0.5fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5rem);
+}
+
+.ppap-download h2 {
+  max-width: 17ch;
+  margin-top: 0.7rem;
+  color: #0a2e3c;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.ppap-download p:not(.eyebrow) {
+  max-width: 42rem;
+  margin: 1.4rem 0 1.8rem;
+  color: #627083;
+}
+
+.ppap-download__qr {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  border: 1px solid #d6dfe2;
+  background: #fff;
+  padding: 1.7rem;
+  color: #0a2e3c;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.ppap-download__qr img {
+  width: min(100%, 13rem);
+  height: auto;
 }
 
 .core-service-card {
@@ -2013,7 +2132,7 @@ a {
 
 .representative-grid article {
   display: grid;
-  min-height: 22rem;
+  min-height: 31rem;
   align-content: start;
   border: 1px solid #d4dddf;
   border-top: 3px solid #e0ad58;
@@ -2039,7 +2158,7 @@ a {
   color: #68777c;
 }
 
-.representative-grid article > div {
+.representative-grid .representative-card__links {
   display: grid;
   gap: 0.6rem;
   margin-top: 1.5rem;
@@ -2050,6 +2169,37 @@ a {
   align-items: center;
   gap: 0.55rem;
   color: #0a6470;
+  font-weight: 700;
+}
+
+.representative-card__qr {
+  align-self: end;
+  display: grid !important;
+  justify-items: center;
+  gap: 0.65rem !important;
+  margin-top: 1.7rem;
+  border-top: 1px solid #dce4e6;
+  padding-top: 1.25rem;
+}
+
+.representative-card__qr > span {
+  justify-self: start;
+  color: #8b693b;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.representative-card__qr img {
+  width: 100%;
+  height: 8.5rem;
+  object-fit: contain;
+}
+
+.representative-card__qr small {
+  color: #68777c;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
@@ -2114,6 +2264,15 @@ a {
     grid-template-columns: 1fr;
   }
 
+  .representative-grid article {
+    min-height: auto;
+  }
+
+  .representative-card__qr img {
+    height: auto;
+    max-height: 10rem;
+  }
+
   .port-contact {
     grid-template-columns: 1fr;
   }
@@ -2151,5 +2310,31 @@ a {
   .pda-form__submit {
     align-items: stretch;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 900px) {
+  .ppap-context-grid,
+  .ppap-timeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ppap-download {
+    grid-template-columns: 1fr;
+  }
+
+  .ppap-download__qr {
+    width: fit-content;
+  }
+}
+
+@media (max-width: 560px) {
+  .ppap-context-grid,
+  .ppap-timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .river-terminal-grid dl {
+    grid-template-columns: 1fr;
   }
 }
