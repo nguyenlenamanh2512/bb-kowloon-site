@@ -140,7 +140,7 @@ echo GITHUB_TOKEN | docker login ghcr.io -u GITHUB_USERNAME --password-stdin
 Trên manager node:
 
 ```bash
-git clone https://github.com/nguyenlemanh2512/bb-kowloon-site.git
+git clone https://github.com/nguyenlenamanh2512/bb-kowloon-site.git
 cd bb-kowloon-site
 cp .env.swarm.example .env.swarm
 nano .env.swarm
