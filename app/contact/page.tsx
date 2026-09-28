@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowDownToLine, Globe2, Mail, MapPin, Phone, Ship } from "lucide-react";
+import { Globe2, Mail, MapPin, Phone, Ship } from "lucide-react";
 import { Suspense } from "react";
 
 import { PageHero } from "@/components/page-hero";
@@ -7,7 +7,7 @@ import { PdaInquiryForm } from "@/components/pda-inquiry-form";
 import { SectionHeading } from "@/components/section-heading";
 import { SiteFooter } from "@/components/site-footer";
 import { company, portRepresentatives } from "@/data/company";
-import { ppapPresentation } from "@/data/ppap";
+//import { ppapPresentation } from "@/data/ppap";
 
 export const metadata: Metadata = {
   title: "Port PDA & Contact",
@@ -74,7 +74,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
+{/*
       <section className="section section--paper" id="ppap-download">
         <div className="site-shell ppap-download">
           <div>
@@ -91,7 +91,7 @@ export default function ContactPage() {
           </a>
         </div>
       </section>
-
+*/}
       <section className="section head-office-section">
         <div className="site-shell contact-layout reveal">
           <div>
