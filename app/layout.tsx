@@ -5,13 +5,13 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "BB Kowloon | Barge & Breakbulk Logistics",
+    default: "BB Kowloon | Ship Agency & Logistics in Cambodia",
     template: "%s | BB Kowloon",
   },
   description:
     "Local ship agency, PDA preparation and supporting cargo logistics across Cambodia's seaports and Mekong River terminals.",
   openGraph: {
-    title: "BB Kowloon | Barge & Breakbulk Logistics",
+    title: "BB Kowloon | Ship Agency & Logistics in Cambodia",
     description:
       "Your trusted local ship agency and logistics partner in Cambodia.",
     type: "website",

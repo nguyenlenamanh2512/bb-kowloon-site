@@ -1,6 +1,6 @@
-# Thay đổi so với source cũ
+# Thay đổi triển khai v0.4.0
 
-Source cũ được giữ riêng tại thư mục `bb-kowloon-site`. Source triển khai mới nằm tại `bb-kowloon-site-production`; nội dung và giao diện website không bị thay đổi.
+Source chính thức được quản lý trực tiếp trong repository GitHub `nguyenlenamanh2512/bb-kowloon-site`. Phiên bản v0.4.0 kết hợp các cập nhật nội dung ship agency, dữ liệu PPAP và cấu hình triển khai production trong cùng một source; không sử dụng thư mục source production riêng.
 
 ## Các thay đổi trong source mới
 
@@ -33,18 +33,17 @@ Source mới chuẩn hóa về npm:
 - Build Worker bằng `npm run build:cloudflare`.
 - Deploy Worker bằng `npm run deploy:cloudflare`.
 
-## Những phần được giữ nguyên
+## Khả năng tương thích được giữ nguyên
 
-- Toàn bộ nội dung trang, component, CSS và hình ảnh.
 - Các route `/`, `/about`, `/services`, `/projects`, `/contact`.
-- Dữ liệu công ty, dịch vụ và dự án.
+- Cấu trúc Next.js App Router và dữ liệu TypeScript hiện có.
 - Khả năng build Cloudflare Worker bằng Vinext/Vite.
 
 ## Sửa lỗi menu điều hướng trên Cloudflare
 
 Vinext `1.0.0-beta.5` phát sinh lỗi JavaScript trong thành phần `next/link` sau khi triển khai Worker (`RSC prefetch setup error` và `TypeError` trong chunk `link`). Kết quả là URL trực tiếp vẫn mở được nhưng bấm menu trên trang không điều hướng.
 
-Source production đã thay các `Link` nội bộ bằng thẻ HTML `<a href>` trong:
+Source v0.4.0 sử dụng thẻ HTML `<a href>` cho các liên kết nội bộ bị ảnh hưởng trong:
 
 - `components/site-header.tsx`
 - `components/site-footer.tsx`

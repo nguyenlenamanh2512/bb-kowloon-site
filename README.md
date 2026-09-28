@@ -1,8 +1,8 @@
 # BB Kowloon corporate website
 
-## Version 2: PPAP terminal reference
+## Version 0.4.0: Ship Agency and PPAP Terminal Reference
 
-The home page presents all seven Phnom Penh Autonomous Port (PPAP) terminal sites from the July 2026 PPAP presentation, with technical details and routes available in a dropdown on each terminal card. The About page includes PPAP's network history with illustrations for each milestone. The Contact page serves the complete PPAP PDF and a QR code for the same download. `PPAP-SOURCE-NOTES.md` maps each website section to its source pages for internal review.
+Version 0.4.0 positions BB Kowloon as a local ship agency and logistics partner in Cambodia. It adds port selection, representative routing and a PDA inquiry flow for vessel calls. The home page also presents all seven Phnom Penh Autonomous Port (PPAP) terminal sites from the July 2026 PPAP presentation, with technical details and routes available on each terminal card. The About page includes PPAP's network history with illustrations for each milestone. The Contact page serves the complete PPAP PDF and a QR code for the same download. `PPAP-SOURCE-NOTES.md` maps each website section to its source pages for internal review.
 
 The QR code points to `https://www.bbKowloon.com/documents/ppap-2026-presentation.pdf`, matching the domain supplied in the BB Kowloon Word document. Deploy at that domain for scanning to work. If the final public domain changes, regenerate `public/documents/ppap-2026-download-qr.svg` with the new absolute PDF URL and update `SITE_URL`.
 

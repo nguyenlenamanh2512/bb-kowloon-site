@@ -1,7 +1,7 @@
 export const company = {
   name: "BB Kowloon Company Limited",
   shortName: "BB Kowloon Co., Ltd",
-  descriptor: "Barge & Breakbulk Logistics",
+  descriptor: "Ship Agency & Logistics in Cambodia",
   tagline: "Efficiency, Innovation, and Competitive Advantage",
   overview:
     "BB Kowloon is first and foremost a local Cambodia ship agency. Our logistics capabilities are arranged to support the same port call, cargo movement or customer requirement.",
