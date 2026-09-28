@@ -204,6 +204,10 @@ a {
   border-bottom: 1px solid rgb(255 255 255 / 0.14);
 }
 
+.site-header .site-shell {
+  height: 9rem;
+}
+
 .site-header--overlay {
   position: absolute;
   inset: 0 0 auto;
@@ -224,8 +228,6 @@ a {
 
 .brand-mark {
   display: grid;
-  width: 8rem;
-  height: 8rem;
   flex: 0 0 auto;
   place-items: center;
   overflow: hidden;
@@ -234,9 +236,29 @@ a {
 }
 
 .brand-mark img {
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.brand-lockup .brand-mark {
+  width: 8rem;
+  height: 8rem;
+}
+
+.brand-lockup .brand-mark img {
+  width: 7rem;
+  height: 3.8rem;
+}
+
+.footer-brand .brand-mark {
   width: 12rem;
   height: 12rem;
-  object-fit: contain;
+}
+
+.footer-brand .brand-mark img {
+  width: 10.5rem;
+  height: 5.7rem;
 }
 
 .desktop-nav {
