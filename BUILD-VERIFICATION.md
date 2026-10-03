@@ -1,23 +1,22 @@
-# Kết quả kiểm tra source triển khai v0.4.0
+# Kết quả kiểm tra source triển khai v1.0.0
 
-Ngày kiểm tra gần nhất: 2026-09-28.
+Ngày kiểm tra gần nhất: 2026-10-01.
 
-## Đã đạt trong lần kiểm tra v0.4.0
+## Đã đạt trong lần kiểm tra v1.0.0
 
-- `package.json` và package gốc trong `package-lock.json` cùng sử dụng version `0.4.0`.
-- ESLint hoàn tất với 0 lỗi; còn 13 cảnh báo `no-img-element` không chặn build.
+- `package.json` và package gốc trong `package-lock.json` cùng sử dụng version `1.0.0`.
+- ESLint hoàn tất với 0 lỗi; còn 22 cảnh báo `no-img-element` không chặn build.
 - Next.js 16.3.4 production build bằng Webpack thành công.
 - TypeScript kiểm tra thành công.
-- Các trang `/`, `/about`, `/services`, `/projects`, `/contact`, `/robots.txt` và `/sitemap.xml` được prerender thành công.
-
-## Kiểm tra triển khai đã thực hiện trước đó
-
-- Next.js standalone server đã khởi động thành công trong lần kiểm tra ngày 2026-09-18.
-- Các endpoint chính đã trả HTTP 200 trong lần kiểm tra ngày 2026-09-18.
-- Vinext/Vite Cloudflare Worker build và Wrangler deploy dry-run đã thành công trong lần kiểm tra ngày 2026-09-18.
+- Các route public, login, CMS, media và trang chi tiết Cargo & Projects được build thành công.
+- Bộ lọc All/News/Product/Activity/Event hiển thị dạng nút; nút đang chọn có nền coral.
+- Trình chỉnh sửa hiển thị Publication date, Cancel và Save changes.
+- Trang Accounts hiển thị chức năng Change password với xác nhận mật khẩu.
+- Ngày đăng được hiển thị trên trang chi tiết bài viết.
+- Không thực hiện lưu bài hoặc đổi mật khẩu thật trong quá trình kiểm tra giao diện.
 
 ## Giới hạn môi trường kiểm tra
 
 - Chưa chạy trực tiếp `docker build`, `docker compose config` hoặc `docker stack deploy` vì môi trường kiểm tra không có Docker Engine.
-- Cloudflare Worker build chưa được chạy lại sau cập nhật nội dung v0.4.0.
-- GitHub Actions sẽ kiểm tra Docker image trên Ubuntu sau khi thay đổi được commit và push. Workflow publish chỉ đẩy image khi build thành công.
+- Chưa chạy lại Cloudflare Worker build cho phiên bản v1.0.0.
+- Kho JSON chỉ được xác nhận cho một tiến trình ghi; cấu hình nhiều replica cần database dùng chung trước khi triển khai.

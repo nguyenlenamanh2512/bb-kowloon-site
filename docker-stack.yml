@@ -5,6 +5,10 @@ services:
     image: ${IMAGE_NAME:-ghcr.io/nguyenlenamanh2512/bb-kowloon-site:latest}
     environment:
       SITE_URL: ${SITE_URL:-https://www.bbKowloon.com}
+      AUTH_SECRET: ${AUTH_SECRET:-change-this-before-production}
+      DATA_DIR: /app/storage
+    volumes:
+      - cms_data:/app/storage
     ports:
       - target: 3000
         published: ${APP_PORT:-3000}
@@ -14,7 +18,9 @@ services:
       - web
     stop_grace_period: 20s
     deploy:
-      replicas: ${REPLICAS:-2}
+      # The bundled JSON store is single-writer. Keep one replica unless DATA_DIR
+      # is replaced with shared storage or the CMS is migrated to an external DB.
+      replicas: ${REPLICAS:-1}
       update_config:
         parallelism: 1
         delay: 10s
@@ -40,3 +46,6 @@ networks:
   web:
     driver: overlay
     attachable: true
+
+volumes:
+  cms_data:

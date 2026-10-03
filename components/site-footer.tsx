@@ -1,4 +1,5 @@
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
 
 import { company } from "@/data/company";
 
@@ -25,7 +26,7 @@ export function SiteFooter() {
           <div className="footer-links">
             <a href="/about">About</a>
             <a href="/services">Services</a>
-            <a href="/projects">Cargo &amp; Projects</a>
+            <Link href="/projects">Cargo &amp; Projects</Link>
             <a href="/contact">Contact</a>
           </div>
         </div>

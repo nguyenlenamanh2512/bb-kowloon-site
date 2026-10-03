@@ -12,5 +12,12 @@ services:
       - "${BIND_ADDRESS:-0.0.0.0}:${APP_PORT:-3000}:3000"
     environment:
       SITE_URL: ${SITE_URL:-https://www.bbKowloon.com}
+      AUTH_SECRET: ${AUTH_SECRET:-change-this-before-production}
+      DATA_DIR: /app/storage
+    volumes:
+      - cms_data:/app/storage
     security_opt:
       - no-new-privileges:true
+
+volumes:
+  cms_data:
