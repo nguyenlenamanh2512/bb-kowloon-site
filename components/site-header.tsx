@@ -1,5 +1,7 @@
-import { Menu } from "lucide-react";
+import { LayoutDashboard, LogIn, Menu } from "lucide-react";
 import Link from "next/link";
+
+import { getCurrentUser } from "@/lib/auth";
 
 const navigation = [
   { href: "/about", label: "About" },
@@ -8,7 +10,8 @@ const navigation = [
   { href: "/contact", label: "Contact" },
 ];
 
-export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
+export async function SiteHeader({ overlay = false }: { overlay?: boolean }) {
+  const user = await getCurrentUser();
   return (
     <header className={`site-header ${overlay ? "site-header--overlay" : ""}`}>
       <div className="site-shell flex h-24 items-center justify-between gap-8">
@@ -28,6 +31,10 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           <a href="/contact" className="nav-cta">
             Contact
           </a>
+          <a href={user ? "/admin" : "/login"} className="nav-account">
+            {user ? <LayoutDashboard size={17} /> : <LogIn size={17} />}
+            {user ? "CMS" : "Login"}
+          </a>
         </nav>
 
         <details className="mobile-nav">
@@ -40,6 +47,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 {item.label}
               </a>
             ))}
+            <a href={user ? "/admin" : "/login"}>{user ? "Open CMS" : "Login"}</a>
           </nav>
         </details>
       </div>

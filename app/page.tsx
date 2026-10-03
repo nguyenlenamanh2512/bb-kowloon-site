@@ -1,4 +1,5 @@
 import { ArrowRight, Boxes } from "lucide-react";
+import Link from "next/link";
 
 import { ProjectCard } from "@/components/project-card";
 import { PortPlanner } from "@/components/port-planner";
@@ -149,7 +150,7 @@ export default function Home() {
               title="Proof of work, across cargo types"
               intro="Operations documented in the company profile, from agricultural products to industrial and oversized cargo."
             />
-            <a href="/projects" className="text-link">View all work <ArrowRight size={17} /></a>
+            <Link href="/projects" className="text-link">View all work <ArrowRight size={17} /></Link>
           </div>
           <div className="featured-projects reveal">
             {projects.slice(0, 4).map((project) => (

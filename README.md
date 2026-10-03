@@ -1,8 +1,8 @@
 # BB Kowloon corporate website
 
-## Version 0.4.0: Ship Agency and PPAP Terminal Reference
+## Version 1.0.0: CMS, authentication and Cargo & Projects publishing
 
-Version 0.4.0 positions BB Kowloon as a local ship agency and logistics partner in Cambodia. It adds port selection, representative routing and a PDA inquiry flow for vessel calls. The home page also presents all seven Phnom Penh Autonomous Port (PPAP) terminal sites from the July 2026 PPAP presentation, with technical details and routes available on each terminal card. The About page includes PPAP's network history with illustrations for each milestone. The Contact page serves the complete PPAP PDF and a QR code for the same download. `PPAP-SOURCE-NOTES.md` maps each website section to its source pages for internal review.
+Version 1.0.0 adds authenticated content management for Cargo & Projects, Admin/User authorization, account and password management, publication dates, content-type filters, rich-text content, YouTube embeds, multi-image upload and a click-to-open lightbox gallery. See [`CHANGELOG.md`](CHANGELOG.md) for the complete list of additions, changes and fixes.
 
 The QR code points to `https://www.bbKowloon.com/documents/ppap-2026-presentation.pdf`, matching the domain supplied in the BB Kowloon Word document. Deploy at that domain for scanning to work. If the final public domain changes, regenerate `public/documents/ppap-2026-download-qr.svg` with the new absolute PDF URL and update `SITE_URL`.
 
@@ -156,7 +156,7 @@ docker stack services bb-kowloon
 docker service logs -f bb-kowloon_website
 ```
 
-Stack mặc định chạy hai replica, rolling update từng replica và tự rollback khi update thất bại. Với Swarm một node, có thể đổi `REPLICAS=1` trong `.env.swarm`.
+Stack mặc định chạy một replica, rolling update từng replica và tự rollback khi update thất bại. Kho JSON hiện tại chỉ hỗ trợ an toàn một tiến trình ghi; không tăng `REPLICAS` trước khi chuyển CMS sang database dùng chung có hỗ trợ nhiều tiến trình.
 
 ## Deploy trực tiếp lên Cloudflare Workers
 
@@ -197,3 +197,19 @@ Workflow publish dùng `GITHUB_TOKEN` có sẵn của repository, không cần t
 - `CONTENT-GAPS.md`: các thông tin còn thiếu trong tài liệu nguồn.
 
 Các route chính: `/`, `/about`, `/services`, `/projects`, `/contact`.
+
+## Đăng nhập và quản trị Cargo & Projects
+
+Mở `/login` để vào khu vực quản trị. Admin có thể tạo bốn loại nội dung (News, Product, Activity, Event) bằng trình soạn thảo block gồm heading, paragraph, quote, list, YouTube và slideshow. Admin cũng có thể tạo tài khoản, phân quyền và đổi mật khẩu trong mục Accounts. Group User chỉ có quyền xem.
+
+Dữ liệu được tạo tự động trong thư mục `storage` ở lần chạy đầu tiên. Không công khai thông tin đăng nhập trên giao diện; hãy đổi ngay mật khẩu khởi tạo trong mục Accounts và đặt `AUTH_SECRET` dài, ngẫu nhiên trong `.env` trước khi đưa lên production.
+
+Ảnh đại diện và gallery có thể tải trực tiếp từ máy (JPG, PNG, WebP, GIF hoặc AVIF, tối đa 8 MB mỗi ảnh). Gallery hiển thị dạng lưới trong bài; người xem bấm thumbnail để mở slideshow toàn màn hình. File upload được lưu cùng volume `cms_data` và phục vụ qua route `/media/*`.
+
+## Lưu trữ dữ liệu CMS
+
+Phiên bản hiện tại chưa dùng MySQL, PostgreSQL hay SQLite. Tài khoản, mật khẩu đã băm và nội dung CMS được lưu trong tệp `storage/cms-data.json` khi chạy local. Thư mục này nằm trong `.gitignore` và không được đưa lên Git.
+
+Trong Docker, biến `DATA_DIR=/app/storage` và named volume `cms_data` giữ tệp `/app/storage/cms-data.json` cùng các ảnh upload. Volume giúp dữ liệu tồn tại khi container được tạo lại. Có thể xem vị trí volume trên máy chủ bằng `docker volume inspect <ten-stack>_cms_data` hoặc `docker volume inspect <ten-project>_cms_data`.
+
+Kho dữ liệu file hiện được thiết kế cho một tiến trình ghi. Docker Swarm mặc định dùng một replica; muốn chạy nhiều replica cần chuyển CMS sang database dùng chung như PostgreSQL.

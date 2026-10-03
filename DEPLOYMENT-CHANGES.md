@@ -1,4 +1,6 @@
-# Thay đổi triển khai v0.4.0
+# Lịch sử thay đổi triển khai v0.4.0
+
+Đây là tài liệu lịch sử của bản v0.4.0. Phiên bản hiện tại là v1.0.0; xem `README.md` và `CHANGELOG.md` để biết các thay đổi mới.
 
 Source chính thức được quản lý trực tiếp trong repository GitHub `nguyenlenamanh2512/bb-kowloon-site`. Phiên bản v0.4.0 kết hợp các cập nhật nội dung ship agency, dữ liệu PPAP và cấu hình triển khai production trong cùng một source; không sử dụng thư mục source production riêng.
 
