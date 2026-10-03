@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const nextConfig: NextConfig = {
   // Produces a minimal self-contained Node.js server for the final Docker image.
@@ -8,6 +9,15 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "64mb",
     },
+  },
+  webpack(config, { webpack }) {
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /^cloudflare:workers$/,
+        path.resolve(process.cwd(), "lib/cloudflare-workers-node-shim.ts"),
+      ),
+    );
+    return config;
   },
 };
 

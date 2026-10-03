@@ -160,7 +160,25 @@ Stack mặc định chạy một replica, rolling update từng replica và tự
 
 ## Deploy trực tiếp lên Cloudflare Workers
 
-Nhánh triển khai Cloudflare hiện có được giữ riêng để không ảnh hưởng Docker:
+Nhánh triển khai Cloudflare hiện có được giữ riêng để không ảnh hưởng Docker. Bản thử nghiệm dùng Workers KV, không dùng D1 hay R2:
+
+- Binding `CMS_KV` lưu toàn bộ nội dung CMS và tài khoản trong một JSON.
+- Ảnh tải từ CMS được lưu trong cùng namespace KV, giới hạn 8 MB mỗi ảnh và 100 MB tổng dung lượng trong ứng dụng.
+- Namespace mặc định: `bb-kowloon-cms-kv` (`fd4d6b845a2644fe81cfe731582e0f46`).
+- Đây là cấu hình thử nghiệm lưu lượng thấp. Workers KV có tính nhất quán cuối cùng, vì vậy thay đổi có thể mất tối đa khoảng 60 giây để hiện ở một vùng Cloudflare khác.
+
+Biến bắt buộc trên Worker:
+
+```text
+AUTH_SECRET=<chuỗi bí mật ngẫu nhiên tối thiểu 32 ký tự>
+CMS_BOOTSTRAP_PASSWORD=<mật khẩu khởi tạo tối thiểu 12 ký tự>
+CMS_BOOTSTRAP_USERNAME=namanh
+CMS_BOOTSTRAP_DISPLAY_NAME=Nam Anh
+```
+
+`CMS_BOOTSTRAP_*` chỉ được dùng khi KV chưa có dữ liệu. Sau lần khởi tạo đầu tiên, quản trị viên đổi mật khẩu trong CMS như bình thường.
+
+Triển khai thủ công:
 
 ```bash
 npm ci
@@ -177,7 +195,7 @@ Deploy command: npm run deploy:cloudflare
 Root directory: /
 ```
 
-Không dùng `pnpm run build`. Source mới chỉ giữ `package-lock.json`, vì vậy Cloudflare phải hiển thị bước cài đặt bằng npm. Có thể đặt build variable `SITE_URL=https://ten-mien-cua-ban.com` trong Cloudflare.
+Không dùng `pnpm run build`. Source mới chỉ giữ `package-lock.json`, vì vậy Cloudflare phải hiển thị bước cài đặt bằng npm. Đặt build variable `SITE_URL=https://ten-mien-cua-ban.com`; nếu dùng namespace khác thì đặt thêm `CLOUDFLARE_KV_NAMESPACE_ID`.
 
 Trong CI, dùng `CLOUDFLARE_API_TOKEN` và `CLOUDFLARE_ACCOUNT_ID` thay cho `wrangler login`. Sau khi Worker được tạo, gắn custom domain trong Cloudflare Dashboard.
 

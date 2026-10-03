@@ -19,10 +19,12 @@ import type {
   PublicUser,
   UserGroup,
 } from "@/lib/cms-types";
+import { getKvBinding, getRuntimeTextBinding } from "@/lib/runtime-env";
 
 const dataDirectory =
   process.env.DATA_DIR || path.join(process.cwd(), "storage");
 const databasePath = path.join(dataDirectory, "cms-data.json");
+const kvDatabaseKey = "cms-data:v1";
 let writeQueue: Promise<unknown> = Promise.resolve();
 
 function hashPassword(password: string, salt: string) {
@@ -51,11 +53,16 @@ function textBlock(text: string): ContentBlock {
   return { id: randomUUID(), type: "paragraph", text };
 }
 
-function initialDatabase(): CmsDatabase {
+function initialDatabase(options?: {
+  username?: string;
+  displayName?: string;
+  password?: string;
+}): CmsDatabase {
   const createdAt = new Date().toISOString();
   const adminId = randomUUID();
-  const adminPassword = createPassword("123");
-  const userPassword = createPassword("123");
+  const initialPassword = options?.password || "123";
+  const adminPassword = createPassword(initialPassword);
+  const userPassword = createPassword(initialPassword);
 
   const seededPosts: CmsPost[] = projects.map((project, index) => ({
     id: randomUUID(),
@@ -165,8 +172,8 @@ function initialDatabase(): CmsDatabase {
     users: [
       {
         id: adminId,
-        username: "namanh",
-        displayName: "Nam Anh",
+        username: options?.username || "namanh",
+        displayName: options?.displayName || "Nam Anh",
         group: "Admin",
         ...adminPassword,
         createdAt,
@@ -185,6 +192,12 @@ function initialDatabase(): CmsDatabase {
 }
 
 async function persist(database: CmsDatabase) {
+  const kv = await getKvBinding();
+  if (kv) {
+    await kv.put(kvDatabaseKey, JSON.stringify(database));
+    return;
+  }
+
   await mkdir(dataDirectory, { recursive: true });
   const temporaryPath = `${databasePath}.${process.pid}.${Date.now()}.tmp`;
   await writeFile(temporaryPath, JSON.stringify(database, null, 2), "utf8");
@@ -196,6 +209,24 @@ async function persist(database: CmsDatabase) {
 }
 
 async function readDatabase(): Promise<CmsDatabase> {
+  const kv = await getKvBinding();
+  if (kv) {
+    const existing = await kv.get<CmsDatabase>(kvDatabaseKey, "json");
+    if (existing) return existing;
+
+    const password = await getRuntimeTextBinding("CMS_BOOTSTRAP_PASSWORD");
+    if (!password || password.length < 12) {
+      throw new Error("CMS_BOOTSTRAP_PASSWORD with at least 12 characters is required for Cloudflare KV.");
+    }
+    const database = initialDatabase({
+      username: (await getRuntimeTextBinding("CMS_BOOTSTRAP_USERNAME")) || "namanh",
+      displayName: (await getRuntimeTextBinding("CMS_BOOTSTRAP_DISPLAY_NAME")) || "Nam Anh",
+      password,
+    });
+    await kv.put(kvDatabaseKey, JSON.stringify(database));
+    return database;
+  }
+
   try {
     const raw = await readFile(databasePath, "utf8");
     return JSON.parse(raw) as CmsDatabase;

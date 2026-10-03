@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 import { getUserById } from "@/lib/cms-store";
 import type { PublicUser } from "@/lib/cms-types";
+import { getRuntimeTextBinding } from "@/lib/runtime-env";
 
 const SESSION_COOKIE = "bbk_session";
 const SESSION_DURATION_SECONDS = 60 * 60 * 12;
@@ -16,19 +17,22 @@ type SessionPayload = {
   exp: number;
 };
 
-function sessionSecret() {
-  return process.env.AUTH_SECRET || localDevelopmentSecret;
+async function sessionSecret() {
+  const configured = await getRuntimeTextBinding("AUTH_SECRET");
+  if (configured) return configured;
+  if (process.env.NODE_ENV !== "production") return localDevelopmentSecret;
+  throw new Error("AUTH_SECRET is required in production.");
 }
 
-function signature(payload: string) {
-  return createHmac("sha256", sessionSecret()).update(payload).digest("base64url");
+async function signature(payload: string) {
+  return createHmac("sha256", await sessionSecret()).update(payload).digest("base64url");
 }
 
-function parseSession(value: string | undefined): SessionPayload | null {
+async function parseSession(value: string | undefined): Promise<SessionPayload | null> {
   if (!value) return null;
   const [payload, suppliedSignature] = value.split(".");
   if (!payload || !suppliedSignature) return null;
-  const expected = Buffer.from(signature(payload));
+  const expected = Buffer.from(await signature(payload));
   const supplied = Buffer.from(suppliedSignature);
   if (expected.length !== supplied.length || !timingSafeEqual(expected, supplied)) return null;
   try {
@@ -45,7 +49,7 @@ export async function createSession(user: PublicUser) {
     JSON.stringify({ sub: user.id, exp: Date.now() + SESSION_DURATION_SECONDS * 1000 }),
   ).toString("base64url");
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, `${payload}.${signature(payload)}`, {
+  cookieStore.set(SESSION_COOKIE, `${payload}.${await signature(payload)}`, {
     httpOnly: true,
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
@@ -61,7 +65,7 @@ export async function destroySession() {
 
 export async function getCurrentUser() {
   const cookieStore = await cookies();
-  const session = parseSession(cookieStore.get(SESSION_COOKIE)?.value);
+  const session = await parseSession(cookieStore.get(SESSION_COOKIE)?.value);
   if (!session) return null;
   return getUserById(session.sub);
 }
