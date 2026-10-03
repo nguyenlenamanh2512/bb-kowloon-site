@@ -17,6 +17,7 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const managedLinux = readExecutionProfile() === "managed-linux";
 
 const localBindingConfig = {
+  name: "bb-kowloon-cms-kv-test",
   main: "vinext/server/fetch-handler",
   compatibility_flags: ["nodejs_compat"],
   kv_namespaces: [
