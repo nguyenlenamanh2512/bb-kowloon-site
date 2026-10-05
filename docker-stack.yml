@@ -7,6 +7,9 @@ services:
       SITE_URL: ${SITE_URL:-https://www.bbKowloon.com}
       AUTH_SECRET: ${AUTH_SECRET:-change-this-before-production}
       DATA_DIR: /app/storage
+      CMS_BOOTSTRAP_USERNAME: ${CMS_BOOTSTRAP_USERNAME:-}
+      CMS_BOOTSTRAP_DISPLAY_NAME: ${CMS_BOOTSTRAP_DISPLAY_NAME:-}
+      CMS_BOOTSTRAP_PASSWORD: ${CMS_BOOTSTRAP_PASSWORD:-}
     volumes:
       - cms_data:/app/storage
     ports:

@@ -1,26 +1,32 @@
+name: bb-kowloon-v1
+
 services:
   website:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        SITE_URL: ${SITE_URL:-https://www.bbKowloon.com}
-    image: ${IMAGE_NAME:-bb-kowloon-site:local}
+        SITE_URL: ${SITE_URL:?SITE_URL is required}
+    image: ${IMAGE_NAME:-bb-kowloon-site:v1.0.0-local}
     restart: unless-stopped
     init: true
     ports:
       - "${BIND_ADDRESS:-0.0.0.0}:${APP_PORT:-3000}:3000"
     environment:
-      SITE_URL: ${SITE_URL:-https://www.bbKowloon.com}
-      AUTH_SECRET: ${AUTH_SECRET:-change-this-before-production}
+      SITE_URL: ${SITE_URL:?SITE_URL is required}
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET is required}
       DATA_DIR: /app/storage
       CMS_BOOTSTRAP_USERNAME: ${CMS_BOOTSTRAP_USERNAME:-}
       CMS_BOOTSTRAP_DISPLAY_NAME: ${CMS_BOOTSTRAP_DISPLAY_NAME:-}
       CMS_BOOTSTRAP_PASSWORD: ${CMS_BOOTSTRAP_PASSWORD:-}
     volumes:
-      - cms_data:/app/storage
+      - type: bind
+        source: ${DATA_PATH:-/srv/bb-kowloon-v1/storage}
+        target: /app/storage
     security_opt:
       - no-new-privileges:true
-
-volumes:
-  cms_data:
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

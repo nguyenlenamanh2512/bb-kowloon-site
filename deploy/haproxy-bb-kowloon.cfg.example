@@ -1,0 +1,21 @@
+# Merge these ACLs/backends into the existing HAProxy configuration on BOTH
+# HAProxy nodes. Do not replace the existing Grafana configuration blindly.
+
+# Add inside the existing HTTPS frontend:
+#   acl host_bb_kowloon hdr(host) -i www.example.com example.com
+#   acl host_grafana hdr(host) -i grafana.example.com
+#   use_backend bb_kowloon_v1 if host_bb_kowloon
+#   use_backend grafana if host_grafana
+
+backend bb_kowloon_v1
+    mode http
+    option forwardfor
+    option httpchk GET /
+    http-check expect status 200
+    server docker_mgr DOCKER_MGR_PRIVATE_IP:3000 check inter 5s fall 3 rise 2
+
+# Keep the existing Grafana backend. A typical example is:
+# backend grafana
+#     mode http
+#     option httpchk GET /api/health
+#     server grafana_1 GRAFANA_PRIVATE_IP:3001 check inter 5s fall 3 rise 2

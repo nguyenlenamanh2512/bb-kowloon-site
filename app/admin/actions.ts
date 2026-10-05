@@ -215,7 +215,6 @@ export async function createUserAction(formData: FormData) {
     const group = String(formData.get("group") || "") as UserGroup;
     if (!groups.has(group)) throw new Error("Please select a valid group.");
     const password = required(formData, "password", 200);
-    if (password.length < 3) throw new Error("Password must contain at least 3 characters.");
     await createUser({
       username: required(formData, "username", 80),
       displayName: required(formData, "displayName", 120),
@@ -245,7 +244,6 @@ export async function updateUserPasswordAction(formData: FormData) {
   try {
     const password = required(formData, "password", 200);
     const confirmation = required(formData, "passwordConfirmation", 200);
-    if (password.length < 3) throw new Error("Password must contain at least 3 characters.");
     if (password !== confirmation) throw new Error("Password confirmation does not match.");
     await updateUserPassword(required(formData, "userId", 100), password);
   } catch (error) {

@@ -51,10 +51,23 @@ export type CmsPost = {
   authorId: string;
 };
 
+export type LoginAttemptState = {
+  failures: number;
+  windowStartedAt: string;
+  lastFailedAt: string;
+  updatedAt: string;
+  lockedUntil?: string;
+};
+
+export type LoginSecurityState = {
+  attempts: Record<string, LoginAttemptState>;
+};
+
 export type CmsDatabase = {
   version: 1;
   users: CmsUser[];
   posts: CmsPost[];
+  loginSecurity?: LoginSecurityState;
 };
 
 export const contentTypeLabels: Record<ContentType, string> = {

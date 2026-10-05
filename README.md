@@ -202,7 +202,9 @@ Các route chính: `/`, `/about`, `/services`, `/projects`, `/contact`.
 
 Mở `/login` để vào khu vực quản trị. Admin có thể tạo bốn loại nội dung (News, Product, Activity, Event) bằng trình soạn thảo block gồm heading, paragraph, quote, list, YouTube và slideshow. Admin cũng có thể tạo tài khoản, phân quyền và đổi mật khẩu trong mục Accounts. Group User chỉ có quyền xem.
 
-Dữ liệu được tạo tự động trong thư mục `storage` ở lần chạy đầu tiên. Không công khai thông tin đăng nhập trên giao diện; hãy đổi ngay mật khẩu khởi tạo trong mục Accounts và đặt `AUTH_SECRET` dài, ngẫu nhiên trong `.env` trước khi đưa lên production.
+Dữ liệu được tạo tự động trong thư mục `storage` ở lần chạy đầu tiên. Source không chứa tài khoản hoặc mật khẩu mặc định. Với thư mục dữ liệu mới, đặt đồng thời `CMS_BOOTSTRAP_USERNAME`, `CMS_BOOTSTRAP_DISPLAY_NAME` và `CMS_BOOTSTRAP_PASSWORD` trong `.env`; mật khẩu phải có ít nhất 12 ký tự. Sau khi tài khoản quản trị đầu tiên được tạo, có thể xóa ba biến bootstrap khỏi `.env`. Luôn đặt `AUTH_SECRET` dài và ngẫu nhiên trước khi đưa lên production.
+
+Đăng nhập được giới hạn đồng thời theo tên tài khoản và địa chỉ IP. Sau 5 lần sai trong 15 phút, đăng nhập bị khóa 15 phút. Trạng thái giới hạn được lưu trong `cms-data.json` để vẫn có hiệu lực khi ứng dụng khởi động lại. Mọi lần đăng nhập thành công, sai hoặc bị chặn được ghi vào `storage/auth-audit.log`; nhật ký chỉ chứa thời gian, kết quả, tên tài khoản, IP và user-agent, không ghi mật khẩu.
 
 Ảnh đại diện và gallery có thể tải trực tiếp từ máy (JPG, PNG, WebP, GIF hoặc AVIF, tối đa 8 MB mỗi ảnh). Gallery hiển thị dạng lưới trong bài; người xem bấm thumbnail để mở slideshow toàn màn hình. File upload được lưu cùng volume `cms_data` và phục vụ qua route `/media/*`.
 

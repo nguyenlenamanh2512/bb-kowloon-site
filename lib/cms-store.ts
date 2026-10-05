@@ -7,7 +7,7 @@ import {
   scryptSync,
   timingSafeEqual,
 } from "node:crypto";
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { projects } from "@/data/projects";
@@ -16,6 +16,7 @@ import type {
   CmsPost,
   CmsUser,
   ContentBlock,
+  LoginAttemptState,
   PublicUser,
   UserGroup,
 } from "@/lib/cms-types";
@@ -23,17 +24,69 @@ import type {
 const dataDirectory =
   process.env.DATA_DIR || path.join(process.cwd(), "storage");
 const databasePath = path.join(dataDirectory, "cms-data.json");
+const authAuditPath = path.join(dataDirectory, "auth-audit.log");
 let writeQueue: Promise<unknown> = Promise.resolve();
+
+export const MIN_PASSWORD_LENGTH = 12;
+const MAX_LOGIN_FAILURES = 5;
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const LOGIN_LOCK_MS = 15 * 60 * 1000;
+const LOGIN_ATTEMPT_RETENTION_MS = 24 * 60 * 60 * 1000;
+const MAX_LOGIN_ATTEMPT_BUCKETS = 5_000;
+const DUMMY_PASSWORD_SALT = "4f82b37c2195a71b8c53599f6f10df68";
+
+export type AuthenticationContext = {
+  ipAddress: string;
+  userAgent: string;
+};
+
+export type AuthenticationResult =
+  | { status: "success"; user: PublicUser }
+  | { status: "invalid" }
+  | { status: "locked"; retryAfterSeconds: number };
+
+function validatePassword(password: string) {
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    throw new Error(`Password must contain at least ${MIN_PASSWORD_LENGTH} characters.`);
+  }
+}
 
 function hashPassword(password: string, salt: string) {
   return scryptSync(password, salt, 64).toString("hex");
 }
 
 function createPassword(password: string) {
+  validatePassword(password);
   const passwordSalt = randomBytes(16).toString("hex");
   return {
     passwordSalt,
     passwordHash: hashPassword(password, passwordSalt),
+  };
+}
+
+function bootstrapAdmin(createdAt: string): CmsUser | null {
+  const username = process.env.CMS_BOOTSTRAP_USERNAME?.trim() || "";
+  const displayName = process.env.CMS_BOOTSTRAP_DISPLAY_NAME?.trim() || "";
+  const password = process.env.CMS_BOOTSTRAP_PASSWORD || "";
+  const suppliedValues = [username, displayName, password].filter(Boolean).length;
+
+  if (suppliedValues === 0) return null;
+  if (suppliedValues !== 3) {
+    throw new Error(
+      "CMS_BOOTSTRAP_USERNAME, CMS_BOOTSTRAP_DISPLAY_NAME and CMS_BOOTSTRAP_PASSWORD must all be set.",
+    );
+  }
+  if (username.length > 80 || displayName.length > 120) {
+    throw new Error("The bootstrap administrator name is too long.");
+  }
+
+  return {
+    id: randomUUID(),
+    username,
+    displayName,
+    group: "Admin",
+    ...createPassword(password),
+    createdAt,
   };
 }
 
@@ -53,9 +106,8 @@ function textBlock(text: string): ContentBlock {
 
 function initialDatabase(): CmsDatabase {
   const createdAt = new Date().toISOString();
-  const adminId = randomUUID();
-  const adminPassword = createPassword("123");
-  const userPassword = createPassword("123");
+  const administrator = bootstrapAdmin(createdAt);
+  const authorId = administrator?.id || "system";
 
   const seededPosts: CmsPost[] = projects.map((project, index) => ({
     id: randomUUID(),
@@ -90,7 +142,7 @@ function initialDatabase(): CmsDatabase {
     publishedAt: createdAt,
     createdAt,
     updatedAt: createdAt,
-    authorId: adminId,
+    authorId,
   }));
 
   seededPosts.unshift({
@@ -157,31 +209,25 @@ function initialDatabase(): CmsDatabase {
     publishedAt: createdAt,
     createdAt,
     updatedAt: createdAt,
-    authorId: adminId,
+    authorId,
   });
 
   return {
     version: 1,
-    users: [
-      {
-        id: adminId,
-        username: "namanh",
-        displayName: "Nam Anh",
-        group: "Admin",
-        ...adminPassword,
-        createdAt,
-      },
-      {
-        id: randomUUID(),
-        username: "Namem",
-        displayName: "Namem",
-        group: "User",
-        ...userPassword,
-        createdAt,
-      },
-    ],
+    users: administrator ? [administrator] : [],
     posts: seededPosts,
   };
+}
+
+function addBootstrapAdminIfNeeded(database: CmsDatabase) {
+  if (database.users.length > 0) return false;
+  const administrator = bootstrapAdmin(new Date().toISOString());
+  if (!administrator) return false;
+  database.users.push(administrator);
+  for (const post of database.posts) {
+    if (!post.authorId || post.authorId === "system") post.authorId = administrator.id;
+  }
+  return true;
 }
 
 async function persist(database: CmsDatabase) {
@@ -198,7 +244,9 @@ async function persist(database: CmsDatabase) {
 async function readDatabase(): Promise<CmsDatabase> {
   try {
     const raw = await readFile(databasePath, "utf8");
-    return JSON.parse(raw) as CmsDatabase;
+    const database = JSON.parse(raw) as CmsDatabase;
+    if (addBootstrapAdminIfNeeded(database)) await persist(database);
+    return database;
   } catch (error) {
     const nodeError = error as NodeJS.ErrnoException;
     if (nodeError.code && nodeError.code !== "ENOENT") throw error;
@@ -219,17 +267,140 @@ async function mutate<T>(operation: (database: CmsDatabase) => T | Promise<T>) {
   return next;
 }
 
-export async function authenticateUser(username: string, password: string) {
-  const database = await readDatabase();
-  const user = database.users.find(
-    (candidate) => candidate.username.toLowerCase() === username.trim().toLowerCase(),
-  );
-  if (!user) return null;
+function loginBucketKey(scope: "account" | "ip", value: string) {
+  return `${scope}:${createHash("sha256").update(value).digest("hex")}`;
+}
 
-  const actual = Buffer.from(user.passwordHash, "hex");
-  const supplied = Buffer.from(hashPassword(password, user.passwordSalt), "hex");
-  if (actual.length !== supplied.length || !timingSafeEqual(actual, supplied)) return null;
-  return safeUser(user);
+function activeLockMilliseconds(state: LoginAttemptState | undefined, now: number) {
+  if (!state?.lockedUntil) return 0;
+  return Math.max(0, Date.parse(state.lockedUntil) - now);
+}
+
+function registerLoginFailure(state: LoginAttemptState | undefined, now: number): LoginAttemptState {
+  const nowIso = new Date(now).toISOString();
+  const windowExpired = !state || now - Date.parse(state.windowStartedAt) >= LOGIN_WINDOW_MS;
+  const failures = windowExpired ? 1 : state.failures + 1;
+  return {
+    failures,
+    windowStartedAt: windowExpired ? nowIso : state.windowStartedAt,
+    lastFailedAt: nowIso,
+    updatedAt: nowIso,
+    lockedUntil: failures >= MAX_LOGIN_FAILURES
+      ? new Date(now + LOGIN_LOCK_MS).toISOString()
+      : undefined,
+  };
+}
+
+function cleanupLoginAttempts(attempts: Record<string, LoginAttemptState>, now: number) {
+  for (const [key, state] of Object.entries(attempts)) {
+    const updatedAt = Date.parse(state.updatedAt);
+    if (!Number.isFinite(updatedAt) || now - updatedAt > LOGIN_ATTEMPT_RETENTION_MS) delete attempts[key];
+  }
+
+  const entries = Object.entries(attempts);
+  if (entries.length <= MAX_LOGIN_ATTEMPT_BUCKETS) return;
+  entries
+    .sort(([, left], [, right]) => Date.parse(left.updatedAt) - Date.parse(right.updatedAt))
+    .slice(0, entries.length - MAX_LOGIN_ATTEMPT_BUCKETS)
+    .forEach(([key]) => delete attempts[key]);
+}
+
+type AuthAuditEvent = {
+  timestamp: string;
+  outcome: "success" | "invalid" | "locked";
+  username: string;
+  ipAddress: string;
+  userAgent: string;
+};
+
+async function writeAuthAudit(event: AuthAuditEvent) {
+  try {
+    await mkdir(dataDirectory, { recursive: true });
+    await appendFile(authAuditPath, `${JSON.stringify(event)}\n`, {
+      encoding: "utf8",
+      mode: 0o600,
+    });
+  } catch {
+    console.error("Authentication audit logging failed.");
+  }
+}
+
+export async function authenticateUser(
+  username: string,
+  password: string,
+  context: AuthenticationContext,
+): Promise<AuthenticationResult> {
+  const normalizedUsername = username.trim().toLowerCase().slice(0, 80);
+  const ipAddress = context.ipAddress.trim().slice(0, 100) || "unknown";
+  const userAgent = context.userAgent.trim().slice(0, 300) || "unknown";
+
+  const authentication = await mutate((database) => {
+    const now = Date.now();
+    database.loginSecurity ||= { attempts: {} };
+    const attempts = database.loginSecurity.attempts;
+    cleanupLoginAttempts(attempts, now);
+
+    const accountKey = loginBucketKey("account", normalizedUsername || "empty");
+    const ipKey = loginBucketKey("ip", ipAddress);
+    const lockMilliseconds = Math.max(
+      activeLockMilliseconds(attempts[accountKey], now),
+      activeLockMilliseconds(attempts[ipKey], now),
+    );
+
+    if (lockMilliseconds > 0) {
+      return {
+        result: {
+          status: "locked",
+          retryAfterSeconds: Math.max(1, Math.ceil(lockMilliseconds / 1000)),
+        } satisfies AuthenticationResult,
+        outcome: "locked" as const,
+      };
+    }
+
+    const user = database.users.find(
+      (candidate) => candidate.username.toLowerCase() === normalizedUsername,
+    );
+    const supplied = Buffer.from(
+      hashPassword(password, user?.passwordSalt || DUMMY_PASSWORD_SALT),
+      "hex",
+    );
+    const actual = user ? Buffer.from(user.passwordHash, "hex") : Buffer.alloc(supplied.length);
+    const passwordMatches = actual.length === supplied.length && timingSafeEqual(actual, supplied);
+
+    if (!user || !passwordMatches) {
+      attempts[accountKey] = registerLoginFailure(attempts[accountKey], now);
+      attempts[ipKey] = registerLoginFailure(attempts[ipKey], now);
+      const newLockMilliseconds = Math.max(
+        activeLockMilliseconds(attempts[accountKey], now),
+        activeLockMilliseconds(attempts[ipKey], now),
+      );
+      return {
+        result: newLockMilliseconds > 0
+          ? {
+              status: "locked",
+              retryAfterSeconds: Math.ceil(newLockMilliseconds / 1000),
+            } satisfies AuthenticationResult
+          : { status: "invalid" } satisfies AuthenticationResult,
+        outcome: newLockMilliseconds > 0 ? "locked" as const : "invalid" as const,
+      };
+    }
+
+    delete attempts[accountKey];
+    delete attempts[ipKey];
+    return {
+      result: { status: "success", user: safeUser(user) } satisfies AuthenticationResult,
+      outcome: "success" as const,
+    };
+  });
+
+  await writeAuthAudit({
+    timestamp: new Date().toISOString(),
+    outcome: authentication.outcome,
+    username: normalizedUsername || "empty",
+    ipAddress,
+    userAgent,
+  });
+  return authentication.result;
 }
 
 export async function getUserById(id: string) {
@@ -275,8 +446,8 @@ export async function deleteUser(id: string, currentUserId: string) {
     if (id === currentUserId) throw new Error("You cannot delete your own account.");
     const user = database.users.find((candidate) => candidate.id === id);
     if (!user) throw new Error("Account not found.");
-    if (user.username.toLowerCase() === "namanh") {
-      throw new Error("The seeded administrator account cannot be deleted.");
+    if (user.group === "Admin" && database.users.filter((candidate) => candidate.group === "Admin").length === 1) {
+      throw new Error("The final administrator account cannot be deleted.");
     }
     database.users = database.users.filter((candidate) => candidate.id !== id);
   });

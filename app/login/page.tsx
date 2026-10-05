@@ -28,6 +28,7 @@ export default async function LoginPage({
           <p>Sign in to manage Cargo &amp; Projects content or review it with read-only access.</p>
         </div>
         {query.error === "invalid" ? <p className="admin-alert admin-alert--error">Incorrect username or password.</p> : null}
+        {query.error === "locked" ? <p className="admin-alert admin-alert--error">Too many unsuccessful attempts. Sign-in is locked for 15 minutes.</p> : null}
         {query.message === "signed-out" ? <p className="admin-alert admin-alert--success">You have been signed out.</p> : null}
         <form action={loginAction} className="login-form">
           <input type="hidden" name="returnTo" value={query.returnTo || "/admin"} />
